@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Larry - Custom ROMs for OnePlus Nord CE 3 Lite</title>
+
+  <meta name="description" content="Project Larry offers clean, efficient, and minimal custom ROMs for OnePlus Nord CE 3 Lite. Explore customizations and support for a smoother Android experience." />
+  <meta name="keywords" content="Project Larry, OnePlus Nord CE 3 Lite, Custom ROM, Android ROMs, Fast Android, Minimal UI, OnePlus Mods, Customization" />
+  <meta name="author" content="Aryan Kumar, Ansh Agnihotri" />
+  <meta name="robots" content="index, follow" />
+
+  <meta property="og:title" content="Project Larry - Custom ROMs for OnePlus Nord CE 3 Lite" />
+  <meta property="og:description" content="Discover minimal and efficient ROMs designed for OnePlus Nord CE 3 Lite with Project Larry." />
+  <meta property="og:image" content="home.png" />
+  <meta property="og:url" content="https://yourwebsite.com" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-color: #0f0f10;
+      --text-color: white;
+      --nav-bg: #1a1a1c;
+      --border-color: white;
+      --button-bg: #000;
+      --shadow-color: rgba(255, 255, 255, 0.4);
+      --larry-opacity: 0.12;
+      --larry-shadow: rgba(128, 128, 128, 0.4);
+      --cursor-fill: white;
+    }
+
+    body.light {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --nav-bg: #e4e4e4;
+      --border-color: #000;
+      --button-bg: #fff;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+      --larry-opacity: 0.07;
+      --larry-shadow: rgba(180, 180, 180, 0.4);
+      --cursor-fill: black;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      overflow-x: hidden;
+      cursor: none;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      position: relative; /* Needed for absolute positioning of mobile nav */
+    }
+
+    .nav-left {
+      font-size: 1.2rem;
+      font-weight: bold;
+      line-height: 1.2;
+    }
+
+    /* Hamburger menu icon styling */
+    .hamburger-menu {
+      display: none; /* Hidden by default on large screens */
+      font-size: 1.8rem;
+      cursor: pointer;
+      z-index: 1001; /* Ensure it's above other content when open */
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 30px;
+      background-color: var(--nav-bg);
+      padding: 10px 30px;
+      border-radius: 30px;
+      transition: background-color 0.4s;
+    }
+
+    .nav-center a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-center a::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -6px;
+      transform: translateX(-50%) scaleX(0);
+      width: 100%;
+      height: 2px;
+      background-color: var(--text-color);
+      transition: transform 0.3s ease;
+      transform-origin: center;
+    }
+
+    .nav-center a:hover::after {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    .nav-center a.active {
+      text-decoration: underline;
+    }
+
+    .nav-right {
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: color 0.4s;
+      z-index: 1001; /* Ensure it's above mobile nav overlay */
+      display: flex; /* Use flex to align icon if it stays */
+      align-items: center; /* Center icon vertically */
+    }
+
+    .hero {
+      position: relative;
+      text-align: center;
+      margin-top: 60px;
+      padding: 0 20px;
+    }
+
+    .hero h1 {
+      font-size: 1.5rem;
+      color: var(--text-color);
+      z-index: 2;
+      position: relative;
+      animation: slideFade 1s ease forwards;
+      opacity: 0;
+      transform: translateY(-20px);
+      letter-spacing: 1px;
+      transition: color 0.4s;
+    }
+
+    @keyframes slideFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero .background-title {
+      font-size: 10rem;
+      font-weight: bold;
+      color: rgba(0, 0, 0, var(--larry-opacity));
+      position: absolute;
+      top: 27%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      white-space: nowrap;
+      pointer-events: none;
+      text-shadow: 2px 2px 6px var(--larry-shadow);
+      transition: all 0.4s;
+    }
+
+    .hero img {
+      width: 600px;
+      max-width: 90%;
+      z-index: 1;
+      position: relative;
+      height: auto;
+    }
+
+    .buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      z-index: 2;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    .buttons a {
+      padding: 12px 24px;
+      border-radius: 20px;
+      background-color: var(--button-bg);
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 500;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 transparent;
+    }
+
+    .buttons a:hover {
+      background-color: #ccc;
+      transform: scale(1.05);
+      box-shadow: 0 0 12px var(--shadow-color);
+    }
+
+    .cursor-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: var(--cursor-fill);
+      border: 2px solid tomato;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: background-color 0.3s ease, border 0.3s ease;
+    }
+
+    .kofi-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffdd00;
+      color: #000;
+      border: none;
+      padding: 10px 18px;
+      font-size: 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      z-index: 999;
+      transition: background 0.3s;
+    }
+
+    .kofi-btn:hover {
+      background-color: #ffc700;
+    }
+
+    /* --- Media Queries for Responsiveness --- */
+
+    /* For screens smaller than 1024px (standard for hiding cursor dot and activating hamburger) */
+    @media (max-width: 1024px) {
+      .cursor-dot {
+        display: none !important; /* Hide cursor dot on smaller screens */
+      }
+
+      body {
+        cursor: auto; /* Revert to default cursor for touch devices */
+        padding: 20px 25px; /* Adjust body padding for tablets/laptops */
+      }
+
+      /* Navigation adjustments for mobile/tablet */
+      nav {
+        flex-direction: row; /* Keep elements in a row for top bar */
+        justify-content: space-between; /* Space out left, hamburger, right */
+        align-items: center;
+        padding-bottom: 20px;
+        flex-wrap: nowrap; /* Prevent nav items from wrapping themselves */
+      }
+
+      .nav-left {
+        flex-grow: 0; /* Don't let it grow */
+      }
+
+      .nav-center {
+        display: none; /* Hide nav links by default */
+        flex-direction: column; /* Stack links vertically when open */
+        position: absolute; /* Position them as an overlay */
+        top: 100%; /* Below the nav bar */
+        left: 0;
+        width: 100%;
+        background-color: var(--nav-bg); /* Use nav background */
+        border-radius: 0 0 15px 15px; /* Rounded bottom corners */
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        padding: 20px 0; /* More vertical padding for links */
+        gap: 15px; /* Space between stacked links */
+        z-index: 1000; /* Ensure it's above content but below hamburger */
+        opacity: 0; /* Start hidden */
+        transform: translateY(-10px); /* Start slightly above */
+        pointer-events: none; /* Disable interaction when hidden */
+        transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+      }
+
+      .nav-center.active {
+        display: flex; /* Show when active */
+        opacity: 1; /* Fade in */
+        transform: translateY(0); /* Slide into place */
+        pointer-events: auto; /* Enable interaction */
+      }
+
+      .nav-center a {
+        font-size: 1.1rem; /* Maintain link size when open */
+        width: 100%; /* Make links full width for better tapping */
+        text-align: center; /* Center link text */
+        padding: 10px 0; /* Padding for tap area */
+        text-decoration: none; /* Remove underline for active class in mobile */
+      }
+
+      .nav-center a::after {
+        display: none; /* Hide underline effect in mobile menu */
+      }
+
+      .nav-right {
+        order: 1; /* Keep the theme toggle on the right, but it will be moved into the menu */
+        display: none; /* Hide original theme toggle */
+      }
+
+      /* New style for theme toggle inside mobile menu */
+      .mobile-theme-toggle {
+        display: block; /* Show the theme toggle specifically inside the mobile menu */
+        font-size: 1.4rem; /* Match original size */
+        cursor: pointer;
+        text-align: center;
+        padding: 10px 0; /* Padding for tap area */
+        color: var(--text-color); /* Ensure consistent color */
+        transition: color 0.4s;
+      }
+
+      .hamburger-menu {
+        display: block; /* Show hamburger icon */
+        order: 2; /* Position it correctly */
+      }
+
+      /* Page-specific adjustments for this breakpoint */
+      .hero .background-title {
+        font-size: 6rem;
+        top: 35%;
+      }
+    }
+
+    /* For screens smaller than 768px (common tablet portrait/larger phone landscape) */
+    @media (max-width: 768px) {
+      body {
+        padding: 15px 20px; /* Further reduce overall body padding */
+      }
+
+      nav {
+        padding-bottom: 15px;
+      }
+
+      .nav-left {
+        font-size: 1.2rem; /* Smaller nav title */
+      }
+
+      .hamburger-menu {
+        font-size: 1.6rem; /* Smaller hamburger icon */
+      }
+
+      .mobile-theme-toggle {
+        font-size: 1.2rem; /* Smaller theme toggle icon */
+      }
+
+      .nav-center {
+        padding: 15px 0; /* Adjust padding for mobile menu */
+      }
+
+      .nav-center a {
+        font-size: 1rem; /* Smaller link font size */
+        padding: 8px 0;
+      }
+
+      /* Page-specific adjustments */
+      .hero .background-title {
+        font-size: 4.5rem; /* Even smaller "Larry" */
+        top: 40%;
+      }
+    }
+
+    /* For screens smaller than 480px (common smartphone sizes) */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px 15px; /* Further reduce overall padding */
+      }
+
+      nav {
+        padding-bottom: 10px;
+      }
+
+      .nav-left {
+        font-size: 1.1rem;
+      }
+      .hamburger-menu {
+        font-size: 1.4rem;
+      }
+      .mobile-theme-toggle {
+        font-size: 1.1rem;
+      }
+
+      .nav-center {
+        padding: 10px 0;
+        gap: 10px;
+      }
+      .nav-center a {
+        font-size: 0.95rem;
+        padding: 6px 0;
+      }
+
+      /* Page-specific adjustments */
+      .hero h1 {
+        font-size: 1.2rem;
+        margin-top: 30px;
+      }
+
+      .hero .background-title {
+        font-size: 3rem; /* Smallest "Larry" */
+        top: 45%;
+      }
+
+      .hero img {
+        max-width: 95%;
+      }
+
+      .buttons {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .buttons a {
+        width: 80%;
+        margin: 0 auto;
+      }
+
+      .kofi-btn {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Specific for touch devices to ensure cursor is default */
+    @media (hover: none) and (pointer: coarse) {
+      body {
+        cursor: auto; /* Revert to default cursor for touch devices */
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-left">Project<br />Larry</div>
+    <div class="hamburger-menu" id="hamburger-menu">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="nav-center" id="nav-links">
+      <a href="overview.html">Overview</a>
+      <a href="gallery.html">Gallery</a>
+      <a href="madeby.html">Made By</a>
+      <a href="support.html">Support</a>
+      <div class="mobile-theme-toggle" id="mobile-theme-toggle">🌙</div>
+    </div>
+    <div class="nav-right" id="theme-toggle">🌙</div>
+  </nav>
+
+  <section class="hero">
+    <h1>OnePlus Nord CE 3 Lite</h1>
+    <div class="background-title">“Larry”</div>
+    <img src="home.png" alt="OnePlus Nord CE 3 Lite phone preview for Project Larry" />
+    <div class="buttons">
+      <a href="overview.html">Explore Specs</a>
+      <a href="support.html">View Custom ROMs</a>
+    </div>
+  </section>
+
+  <a href="donate.html" class="kofi-btn">Donate</a>
+
+  <div class="cursor-dot" id="cursor-dot"></div>
+
+  <script>
+    const cursor = document.getElementById('cursor-dot');
+    const themeToggleDesktop = document.getElementById('theme-toggle'); // Original desktop toggle
+    const themeToggleMobile = document.getElementById('mobile-theme-toggle'); // New mobile toggle
+    const hamburgerMenu = document.getElementById('hamburger-menu');
+    const navLinks = document.getElementById('nav-links');
+    const navElement = document.querySelector('nav'); // Reference to the nav element
+
+    // Cursor Dot Logic (Desktop Only)
+    // The media query in CSS already hides the cursor, but this ensures JS doesn't try to move a non-existent element
+    if (window.innerWidth > 1024 || window.matchMedia('(hover: hover)').matches) {
+      document.addEventListener('mousemove', e => {
+        if (cursor) {
+          cursor.style.top = e.clientY + 'px';
+          cursor.style.left = e.clientX + 'px';
+        }
+      });
+    } else {
+      if (cursor) {
+        cursor.style.display = 'none';
+      }
+      document.body.style.cursor = 'auto'; // Ensure default cursor on touch devices
+    }
+
+    // Function to toggle theme (reusable for both toggles)
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const isLight = document.body.classList.contains('light');
+      const icon = isLight ? '☀️' : '🌙';
+      // Update both toggles if they exist
+      if (themeToggleDesktop) {
+        themeToggleDesktop.textContent = icon;
+      }
+      if (themeToggleMobile) {
+        themeToggleMobile.textContent = icon;
+      }
+    }
+
+    // Event listeners for theme toggles
+    if (themeToggleDesktop) {
+      themeToggleDesktop.addEventListener('click', toggleTheme);
+    }
+    if (themeToggleMobile) {
+      themeToggleMobile.addEventListener('click', toggleTheme);
+    }
+
+    // Hamburger Menu Toggle
+    if (hamburgerMenu && navLinks) {
+      hamburgerMenu.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        // Change icon based on menu state
+        if (navLinks.classList.contains('active')) {
+          hamburgerMenu.innerHTML = '<i class="fas fa-times"></i>'; // Close icon
+        } else {
+          hamburgerMenu.innerHTML = '<i class="fas fa-bars"></i>'; // Hamburger icon
+        }
+      });
+
+      // Close menu if a link is clicked (for better UX on mobile)
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          // Only close if menu is active and on mobile view
+          if (navLinks.classList.contains('active') && window.innerWidth <= 1024) {
+              navLinks.classList.remove('active');
+              hamburgerMenu.innerHTML = '<i class="fas fa-bars"></i>'; // Reset icon
+          }
+        });
+      });
+
+      // Close menu if clicked outside
+      document.addEventListener('click', (event) => {
+        // Check if the click is outside the nav element AND the menu is active
+        if (!navElement.contains(event.target) && navLinks.classList.contains('active')) {
+          navLinks.classList.remove('active');
+          hamburgerMenu.innerHTML = '<i class="fas fa-bars"></i>';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
