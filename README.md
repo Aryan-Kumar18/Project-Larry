@@ -7,7 +7,7 @@ This is website for OnePlus Nord ce 3 Lite custom roms.
 
 ## 🌐 Live Demo
 
-🔗 [Click here to view the live site]([https://projectlarry.netlify.app/)
+🔗 [View Live Website](https://projectlarry.netlify.app/)
 
 ---
 
